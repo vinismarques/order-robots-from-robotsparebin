@@ -30,7 +30,7 @@ Order robots from RobotSpareBin Industries Inc
             Close the annoying modal
             Fill the form    ${row}
             Preview the robot
-            Wait Until Keyword Succeeds    5x    1 sec    Submit the order
+            Try to submit the order
             ${pdf}=    Store the receipt as a PDF file    ${row}[Order number]
             ${screenshot}=    Take a screenshot of the robot    ${row}[Order number]
             Embed the robot screenshot to the receipt PDF file    ${screenshot}    ${pdf}
@@ -78,6 +78,14 @@ Fill the form
 
 Preview the robot
     Click    css=#preview
+
+Try to submit the order
+    TRY
+        ${default_failure_keyword}=    Register Keyword To Run On Failure    ${None}
+        Wait Until Keyword Succeeds    5x    0 sec    Submit the order
+    FINALLY
+        Register Keyword To Run On Failure    ${default_failure_keyword}
+    END
 
 Submit the order
     Click    css=#order
